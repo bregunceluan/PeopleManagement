@@ -1,0 +1,102 @@
+﻿@inject HttpClient _httpClient;
+@inject ILoggerFactory LoggerFactory;
+
+ @page "/users";
+
+@using Newtonsoft.Json;
+@using PeopleManagement.Web.Models;
+
+
+<div style="display:flex; flex-direction:column; gap:5px; padding-top:10px">
+    <div style="display:flex; flex-direction:row; gap:5px; align-items:baseline">
+        <label style="padding-right:25px">
+            Nome:
+        </label>
+        <input />
+    </div>
+
+    <div style="display:flex; flex-direction:row; gap:5px; align-items:baseline">
+        <label style="padding-right:25px">
+            Cargo:
+        </label>
+        <select>
+            @foreach (var cargo in Cargos)
+            {
+                <option value="@cargo.Id">@cargo.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div style="display:flex; flex-direction:row; gap:5px; align-items:baseline">
+        <label style="padding-right:20px">
+            Equipe:
+        </label>
+        <select>
+            @foreach (var equipe in Equipes)
+            {
+                <option value="@equipe.Id">@equipe.Nome</option>
+            }
+        </select>
+    </div>
+
+
+    <div style="display:flex; flex-direction:row; gap:5px; align-items:baseline">
+        <label style="padding-right:30px">
+            Setor:
+        </label>
+        <input />
+    </div>
+
+    <div style="display:flex; flex-direction:row; gap:5px; align-items:baseline">
+        <label>
+            Admissão:
+        </label>
+        <input />
+    </div>
+
+
+    <div style="display:flex; flex-direction:row; gap:5px; align-items:baseline">
+        <label style="padding-right:5px">
+            Empresa:
+        </label>
+        <input />
+    </div>
+
+    <button style="width:300px;height:50px" @onclick="Teste">
+        Criar
+    </button>
+
+</div>
+
+@code {
+    public List<Cargo> Cargos { get; set; } = new List<Cargo>();
+
+    public List<Equipe> Equipes { get; set; } = new List<Equipe>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _httpClient.BaseAddress = new Uri("http://localhost:5082/");
+        var response = await _httpClient.GetAsync("api/cargo");
+        var result = await response.Content.ReadAsStringAsync();
+
+        Cargos = JsonConvert.DeserializeObject<List<Cargo>>(result);
+
+        var responseEquipe = await _httpClient.GetAsync("api/equipe");
+        var resultEquipe = await response.Content.ReadAsStringAsync();
+        Equipes = JsonConvert.DeserializeObject<List<Equipe>>(resultEquipe);
+
+
+    }
+
+
+    public async void Teste()
+    {
+        _httpClient.BaseAddress = new Uri("http://localhost:5082/");
+        var response = await _httpClient.GetAsync("api/cargo");
+        var result = await response.Content.ReadAsStringAsync();
+
+        Cargos = JsonConvert.DeserializeObject<List<Cargo>>(result);
+    }
+
+}
