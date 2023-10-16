@@ -1,10 +1,12 @@
 ﻿@inject HttpClient _httpClient;
 @inject ILoggerFactory LoggerFactory;
+@inject IUserService _userService;
 
  @page "/users";
 
 @using Newtonsoft.Json;
 @using PeopleManagement.Web.Models;
+@using PeopleManagement.Web.Services.Interfaces;
 
 
 <div style="display:flex; flex-direction:column; gap:5px; padding-top:10px">
@@ -34,7 +36,7 @@
         <select>
             @foreach (var equipe in Equipes)
             {
-                <option value="@equipe.Id">@equipe.Nome</option>
+                <option value="@equipe.Id">@equipe.Name</option>
             }
         </select>
     </div>
@@ -71,7 +73,7 @@
 @code {
     public List<Cargo> Cargos { get; set; } = new List<Cargo>();
 
-    public List<Equipe> Equipes { get; set; } = new List<Equipe>();
+    public List<User> Equipes { get; set; } = new List<User>();
 
 
     protected override async Task OnInitializedAsync()
@@ -82,9 +84,7 @@
 
         Cargos = JsonConvert.DeserializeObject<List<Cargo>>(result);
 
-        var responseEquipe = await _httpClient.GetAsync("api/equipe");
-        var resultEquipe = await response.Content.ReadAsStringAsync();
-        Equipes = JsonConvert.DeserializeObject<List<Equipe>>(resultEquipe);
+        Equipes = await _userService.GetAllUsers();
 
 
     }

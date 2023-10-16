@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PeopleManagement.API.Model.Context;
 
@@ -10,9 +11,11 @@ using PeopleManagement.API.Model.Context;
 namespace PeopleManagement.API.Migrations
 {
     [DbContext(typeof(RmContext))]
-    partial class RmContextModelSnapshot : ModelSnapshot
+    [Migration("20231014235615_InsertingData")]
+    partial class InsertingData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
